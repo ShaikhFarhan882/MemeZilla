@@ -51,14 +51,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val actionBar: ActionBar?
-        actionBar = supportActionBar
-        val colorDrawable = ColorDrawable(Color.parseColor("#3700B3"))
-        actionBar!!.setBackgroundDrawable(colorDrawable)
-        actionBar!!.title = "MemeZilla"
-
-
-
 
         fetchMemes()
 
