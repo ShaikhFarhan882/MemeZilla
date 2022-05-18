@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/FARHAN/AndroidStudioProjects/MemeZilla/app/src/main/res/drawable/gradient_bg.xml" value="0.18888888888888888" />
+        <entry key="..\:/Users/FARHAN/AndroidStudioProjects/MemeZilla/app/src/main/res/drawable/next_bg.xml" value="0.18518518518518517" />
+        <entry key="..\:/Users/FARHAN/AndroidStudioProjects/MemeZilla/app/src/main/res/drawable/share_bg.xml" value="0.18518518518518517" />
         <entry key="..\:/Users/FARHAN/AndroidStudioProjects/MemeZilla/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/FARHAN/AndroidStudioProjects/MemeZilla/app/src/main/res/layout/gradient_bg.xml" value="0.1796875" />
         <entry key="..\:/Users/FARHAN/AndroidStudioProjects/MemeZilla/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.18888888888888888" />

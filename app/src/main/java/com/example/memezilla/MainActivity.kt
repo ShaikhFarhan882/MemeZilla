@@ -7,14 +7,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBar
 import com.android.volley.Request
 import com.android.volley.Response
@@ -51,6 +49,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(!verifyAvailableNetwork(this)==true){
+            Toast.makeText(this,"No Network Available",Toast.LENGTH_LONG).show()
+        }
+        else{
+            Toast.makeText(this,"Network Available",Toast.LENGTH_SHORT).show()
+        }
 
         fetchMemes()
 
@@ -117,6 +121,13 @@ class MainActivity : AppCompatActivity() {
         queue.add(request)
 
     }
+
+    fun verifyAvailableNetwork(activity:AppCompatActivity):Boolean{
+        val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo=connectivityManager.activeNetworkInfo
+        return  networkInfo!=null && networkInfo.isConnected
+    }
+
 
 
 }
