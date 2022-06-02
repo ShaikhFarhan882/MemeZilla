@@ -7,6 +7,5 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="share">#0000FF</color>
-    <color name="next">#4B9125</color>
+    <color name="font">#9CED91</color>
 </resources>
