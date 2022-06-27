@@ -23,95 +23,86 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.memezilla.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.sql.DataSource
 
 class MainActivity : AppCompatActivity() {
 
-     val MemeTitle:TextView
-        get() = findViewById(R.id.Meme_title)
+    var urlMeme: String = ""
 
-     val MemeImage: ImageView
-      get() = findViewById(R.id.MemeImage)
-
-     val shareButton : Button
-      get() = findViewById(R.id.ShareButton)
-
-     val nextButton : Button
-        get() = findViewById(R.id.NextButton)
-
-    var urlMeme : String = ""
-
-    val progressBar : ProgressBar
-    get() = findViewById(R.id.progressBar)
-
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
-            if(!verifyAvailableNetwork(this)) {
-                Toast.makeText(this, "No Network Available", Toast.LENGTH_LONG).show()
-            }
+        if (!verifyAvailableNetwork(this)) {
+            Toast.makeText(this, "No Network Available", Toast.LENGTH_LONG).show()
+        }
 
-        GlobalScope.launch(Dispatchers.Main){
+        GlobalScope.launch(Dispatchers.Main) {
             fetchMemes()
         }
 
 
-        nextButton.setOnClickListener(View.OnClickListener {
+        binding.NextButton.setOnClickListener(View.OnClickListener {
 
-            GlobalScope.launch(Dispatchers.Main){
+            GlobalScope.launch(Dispatchers.Main) {
                 fetchMemes()
             }
         })
 
-        shareButton.setOnClickListener(View.OnClickListener { view ->
-           GlobalScope.launch {
-               shareMeme()
-           }
+        binding.ShareButton.setOnClickListener(View.OnClickListener { view ->
+            GlobalScope.launch {
+                withContext(Dispatchers.IO){
+                    shareMeme()
+                }
+            }
 
         })
 
     }
 
-    suspend fun shareMeme(){
-        val intent= Intent()
-        intent.action=Intent.ACTION_SEND
-        intent.putExtra(Intent.EXTRA_TEXT,urlMeme)
-        intent.type="text/plain"
-        startActivity(Intent.createChooser(intent,"Share To:"))
+    suspend fun shareMeme() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND
+        intent.putExtra(Intent.EXTRA_TEXT, urlMeme)
+        intent.type = "text/plain"
+        startActivity(Intent.createChooser(intent, "Share To:"))
     }
 
-     suspend private fun fetchMemes(){
-        progressBar.visibility = View.VISIBLE
+    suspend private fun fetchMemes() {
+        binding.progressBar.visibility = View.VISIBLE
 
         val queue = Volley.newRequestQueue(this)
         val url = "https://meme-api.herokuapp.com/gimme"
 
         //string Request
-        val request = JsonObjectRequest(Request.Method.GET,url,null, { response ->
+        val request = JsonObjectRequest(Request.Method.GET, url, null, { response ->
             val url = response.getString("url")
             val title = response.getString("title")
 
             loadImage(url)
 
-            MemeTitle.setText(title)
+            binding.MemeTitle.setText(title)
             urlMeme = url
 
         }, {
-            Toast.makeText(this,"Failed to Load!",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Failed to Load!", Toast.LENGTH_SHORT).show()
 
         })
 
-        queue.add(request)
+        MySingleton.getInstance(applicationContext).requestQueue.add(request)
 
     }
 
-     private fun loadImage(url: String){
+    private fun loadImage(url: String) {
         Glide.with(this)
             .load(url)
             .listener(object : com.bumptech.glide.request.RequestListener<Drawable> {
@@ -120,9 +111,9 @@ class MainActivity : AppCompatActivity() {
                     model: Any?,
                     target: com.bumptech.glide.request.target.Target<Drawable>?,
                     dataSource: com.bumptech.glide.load.DataSource?,
-                    isFirstResource: Boolean
+                    isFirstResource: Boolean,
                 ): Boolean {
-                    progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
 
                     return false
                 }
@@ -131,22 +122,22 @@ class MainActivity : AppCompatActivity() {
                     e: GlideException?,
                     model: Any?,
                     target: Target<Drawable>?,
-                    isFirstResource: Boolean
+                    isFirstResource: Boolean,
                 ): Boolean {
-                    progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
                     return false
                 }
 
-            }).into(MemeImage)
+            }).into(binding.MemeImage)
 
     }
 
-       fun verifyAvailableNetwork(activity:AppCompatActivity):Boolean{
-        val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo=connectivityManager.activeNetworkInfo
-        return  networkInfo!=null && networkInfo.isConnected
+    fun verifyAvailableNetwork(activity: AppCompatActivity): Boolean {
+        val connectivityManager =
+            activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
-
 
 
 }

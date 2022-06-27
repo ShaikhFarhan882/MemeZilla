@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_bg"
+    android:background="@color/bg_color"
     android:padding="10dp"
     tools:context=".MainActivity">
 
@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:text="Title"
         android:fontFamily="@font/customfont"
-        android:textColor="@color/font"
-        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/MemeImage"
         app:layout_constraintHorizontal_bias="0.526"
@@ -77,9 +77,9 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="268dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="328dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
